@@ -207,9 +207,9 @@ def RadiusStar(klass_star):
     elif klass_star == 'L' or klass_star == 'T' or klass_star == 'Y':
         inp = random.randint(12, 70)/1000
     elif klass_star == 'Dd' or klass_star == 'D':
-        return '-', random.randint(609, 819)*10
+        return '-', random.randint(609, 819)*1000
     elif klass_star == 'N':
-        return '-', random.randint(10, 15)
+        return '-', random.randint(100, 150)*100
     elif len(klass_star) == 2 and klass_star[1] == 'g':
         inp = random.randint(10, 100)
     elif len(klass_star) == 2 and klass_star[1] == 'c':

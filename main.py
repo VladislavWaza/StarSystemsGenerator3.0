@@ -3,6 +3,7 @@ import random
 import math
 rand = 0
 RadiusSun = 6.9551 * 10 ** 8
+MassSun = 1.9891 * 10 ** 30
 TypesStar = ['Горячая звезда главной последовательности', 'Горячий сверхгигант главной последовательности',
             'Звезда главной последовательности', 'Гигант главной последовательности',
             'Сверхгигант главной последовательности', 'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар',
@@ -216,6 +217,33 @@ def RadiusStar(klass_star):
         inp = random.randint(10, 180)*10
     return inp, inp * RadiusSun
 
+def MassStar(klass_star):
+    if klass_star == 'O':
+        inp = random.randint(15, 105)
+    elif klass_star == 'B':
+        inp = random.randint(45, 315)/10
+    elif klass_star == 'A':
+        inp = random.randint(78, 543)/100
+    elif klass_star == 'F':
+        inp = random.randint(43, 298)/100
+    elif klass_star == 'G':
+        inp = random.randint(28, 193)/100
+    elif klass_star == 'K':
+        inp = random.randint(20, 140)/100
+    elif klass_star == 'M':
+        inp = random.randint(8, 60)/100
+    elif klass_star == 'L' or klass_star == 'T' or klass_star == 'Y':
+        inp = random.randint(20, 77)/1000
+    elif klass_star == 'Dd' or klass_star == 'D':
+        inp = random.randint(60, 144)/100
+    elif klass_star == 'N':
+        inp = random.randint(1, 216)/100
+    elif len(klass_star) == 2 and klass_star[1] == 'g':
+        inp = random.randint(2, 300)/10
+    elif len(klass_star) == 2 and klass_star[1] == 'c':
+        inp = random.randint(10, 300)
+    return inp, inp * MassSun
+
 
 random.seed()
 tmp_yn = input("Сгенерировать название системы(y/n)? ")
@@ -224,7 +252,7 @@ if tmp_yn == 'y':
     data_syllables = ['ал', 'ле', 'лу', 'ге', 'за', 'се', 'на', 'би', 'со', 'ус', 'юс', 'ес', 'ар', 'ма', 'ин', 'ди',
                       'ре', 'ри', 'а', 'ер', 'ат', 'ен', 'бе', 'ра', 'ла', 'ве', 'ти', 'ед', 'ор', 'ку', 'ан', 'те',
                       'ис', 'он', 'фо', 'ке', 'ек', 'ос']
-    tmp_count = random.choice([2,3,3,4,4,5])
+    tmp_count = random.choice([2, 3, 3, 4, 4, 5])
     for i in range(tmp_count):
         if random.randint(0, 1) == 0:
             name += random.choice(data_syllables)[::-1]
@@ -260,6 +288,7 @@ for i in range(1, n_star+1):
     color_star = ColorStar(klass_star)
     temp_star = TempStar(klass_star)
     rad_star_sun, rad_star_m = RadiusStar(klass_star)
+    mass_star_sun, mass_star_kg = MassStar(klass_star)
 
     wsys[wlitter + '1'] = name_star
     wsys[wlitter + '2'] = color_star
@@ -269,6 +298,8 @@ for i in range(1, n_star+1):
     wsys[wlitter + '6'] = temp_star
     wsys[wlitter + '7'] = rad_star_m
     wsys[wlitter + '8'] = rad_star_sun
+    wsys[wlitter + '9'] = mass_star_kg
+    wsys[wlitter + '10'] = mass_star_sun
     if n_planet > 0:
         wstar = wb.copy_worksheet(wb_template['Звезда'])
         wstar.title = name_star
@@ -280,7 +311,8 @@ for i in range(1, n_star+1):
         wstar['B6'] = temp_star
         wstar['B7'] = rad_star_m
         wstar['B8'] = rad_star_sun
-
+        wstar['B9'] = mass_star_kg
+        wstar['B10'] = mass_star_sun
 
 
 # wb.move_sheet(ws, offset=-1)

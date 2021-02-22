@@ -1,18 +1,22 @@
 from openpyxl import Workbook, load_workbook
 import random
 import math
-
+rand = 0
 TypesStar = ['Горячая звезда главной последовательности', 'Горячий сверхгигант главной последовательности',
             'Звезда главной последовательности', 'Гигант главной последовательности',
             'Сверхгигант главной последовательности', 'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар',
             'Магнитар']
 
+
 def CountStar():
     global rand
-    inp = int(input("Сколько звезд в системе? "))
-    if inp == -2 or rand == -1:
-        rand = -1
+    if rand == -1:
         inp = -1
+    else:
+        inp = int(input("Сколько звезд в системе? "))
+        if inp == -2:
+            rand = -1
+            inp = -1
     if inp == -1:
         inp = random.randint(1, 1000)
         if inp >= 999:
@@ -35,14 +39,17 @@ def CountStar():
         return inp
 
 def TypeStar(name_star):
-    global rand, TypesStar
-    print("Выберете тип "+name_star)
-    for _ in range(10):
-        print(str(_)+'.'+TypesStar[_-1])
-    inp = int(input())
-    if inp == -2 or rand == -1:
-        rand = -1
+    global TypesStar, rand
+    if rand == -1:
         inp = -1
+    else:
+        print("Выберете тип " + name_star)
+        for _ in range(10):
+            print(str(_) + '.' + TypesStar[_ - 1])
+        inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
     if inp == -1:
         inp = random.randint(1, 100)
         if inp >= 96:
@@ -70,10 +77,13 @@ def TypeStar(name_star):
 
 def CountPlanet(name_star):
     global rand
-    inp = int(input("Сколько планет у звезды "+name_star+"? "))
-    if inp == -2 or rand == -1:
-        rand = -1
+    if rand == -1:
         inp = -1
+    else:
+        inp = int(input("Сколько планет у звезды "+name_star+"? "))
+        if inp == -2:
+            rand = -1
+            inp = -1
     if inp == -1:
         inp = random.randint(1, 31)
         if inp == 31:
@@ -122,11 +132,16 @@ def CountPlanet(name_star):
 
 def KlassStar(name_star, type_star):
     global rand
+    if rand == -1:
+        inp = '-1'
+    else:
+        inp = 0
     if type_star == 1:
-        print("Выберете класс "+name_star)
-        print('O\nB\nA\nF')
-        inp = input()
-        if inp == '-2' or rand == -1:
+        if inp != '-1':
+            print("Выберете класс "+name_star)
+            print('O\nB\nA\nF')
+            inp = input()
+        if inp == '-2':
             rand = -1
             inp = '-1'
         if inp == '-1':
@@ -142,10 +157,11 @@ def KlassStar(name_star, type_star):
         else:
             return inp
     elif type_star == 2:
-        print("Выберете класс " + name_star)
-        print('Oc\nBc\nAc\nFc')
-        inp = input()
-        if inp == '-2' or rand == -1:
+        if inp != '-1':
+            print("Выберете класс " + name_star)
+            print('Oc\nBc\nAc\nFc')
+            inp = input()
+        if inp == '-2':
             rand = -1
             inp = '-1'
         if inp == '-1':
@@ -161,10 +177,11 @@ def KlassStar(name_star, type_star):
         else:
             return inp
     elif type_star == 3:
-        print("Выберете класс " + name_star)
-        print('G\nK\nM')
-        inp = input()
-        if inp == '-2' or rand == -1:
+        if inp != '-1':
+            print("Выберете класс " + name_star)
+            print('G\nK\nM')
+            inp = input()
+        if inp == '-2':
             rand = -1
             inp = '-1'
         if inp == '-1':
@@ -178,10 +195,11 @@ def KlassStar(name_star, type_star):
         else:
             return inp
     elif type_star == 4:
-        print("Выберете класс " + name_star)
-        print('Gg\nKg\nMg')
-        inp = input()
-        if inp == '-2' or rand == -1:
+        if inp != '-1':
+            print("Выберете класс " + name_star)
+            print('Gg\nKg\nMg')
+            inp = input()
+        if inp == '-2':
             rand = -1
             inp = '-1'
         if inp == '-1':
@@ -195,10 +213,11 @@ def KlassStar(name_star, type_star):
         else:
             return inp
     elif type_star == 5:
-        print("Выберете класс " + name_star)
-        print('Gc\nKc\nMc')
-        inp = input()
-        if inp == '-2' or rand == -1:
+        if inp != '-1':
+            print("Выберете класс " + name_star)
+            print('Gc\nKc\nMc')
+            inp = input()
+        if inp == '-2':
             rand = -1
             inp = '-1'
         if inp == '-1':
@@ -212,10 +231,11 @@ def KlassStar(name_star, type_star):
         else:
             return inp
     elif type_star == 6:
-        print("Выберете класс " + name_star)
-        print('L\nT\nY')
-        inp = input()
-        if inp == '-2' or rand == -1:
+        if inp != '-1':
+            print("Выберете класс " + name_star)
+            print('L\nT\nY')
+            inp = input()
+        if inp == '-2':
             rand = -1
             inp = '-1'
         if inp == '-1':
@@ -285,6 +305,7 @@ def TempStar(klass_star):
     elif klass_star == 'N':
         return random.randint(100, 1000)*1000
 
+ # def RadiusStar(klass_star)
 
 random.seed()
 tmp_yn = input("Сгенерировать название системы(y/n)? ")
@@ -316,8 +337,6 @@ n_star = CountStar()
 wb_template = load_workbook('template.xlsx')  # загрузка шаблона
 wb = wb_template  # копирование шаблона
 wsys = wb['Система']  # делаем активным основной лист
-del wb["Звезда"]
-del wb["Планета"]
 for i in range(1, n_star+1):
 
     if i > 25:    # литера для работы с файлом
@@ -349,15 +368,16 @@ for i in range(1, n_star+1):
         wstar = wb.copy_worksheet(wb_template['Звезда'])
         wstar.title = name_star
         wstar['B1'] = name_star
-        wsys['B2'] = color_star
-        wsys['B3'] = TypesStar[type_star - 1]
-        wsys['B4'] = klass_star
-        wsys['B5'] = n_planet
-        wsys['B6'] = temp_star
-    
+        wstar['B2'] = color_star
+        wstar['B3'] = TypesStar[type_star - 1]
+        wstar['B4'] = klass_star
+        wstar['B5'] = n_planet
+        wstar['B6'] = temp_star
+
 
 
 # wb.move_sheet(ws, offset=-1)
-
+del wb["Звезда"]
+del wb["Планета"]
 wb.worksheets[0].name = "Main"
 wb.save(name+'.xlsx')

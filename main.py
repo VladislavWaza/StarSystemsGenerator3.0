@@ -18,23 +18,7 @@ def CountStar():
             rand = -1
             inp = -1
     if inp == -1:
-        inp = random.randint(1, 1000)
-        if inp >= 999:
-            return 8
-        elif inp >= 995:
-            return 7
-        elif inp >= 990:
-            return 6
-        elif inp >= 980:
-            return 5
-        elif inp >= 960:
-            return 4
-        elif inp >= 900:
-            return 3
-        elif inp >= 800:
-            return 2
-        else:
-            return 1
+        return random.choice(list([8]*2+[7]*4+[6]*5+[5]*10+[4]*20+[3]*60+[2]*100+[1]*799))
     else:
         return inp
 
@@ -51,27 +35,7 @@ def TypeStar(name_star):
             rand = -1
             inp = -1
     if inp == -1:
-        inp = random.randint(1, 100)
-        if inp >= 96:
-            return 1
-        elif inp >= 95:
-            return 2
-        elif inp >= 21:
-            return 3
-        elif inp >= 17:
-            return 4
-        elif inp >= 15:
-            return 5
-        elif inp >= 10:
-            return 6
-        elif inp >= 5:
-            return 7
-        elif inp >= 4:
-            return 8
-        elif inp >= 2:
-            return 9
-        else:
-            return 10
+        return random.choice(list([1]*5+[2]*1+[3]*74+[4]*4+[5]*2+[6]*5+[7]*5+[8]*1+[9]*2+[10]))
     else:
         return inp
 
@@ -85,50 +49,9 @@ def CountPlanet(name_star):
             rand = -1
             inp = -1
     if inp == -1:
-        inp = random.randint(1, 31)
-        if inp == 31:
-            inp = 0
-        elif inp == 30:
-            inp = 1
-        elif inp == 29:
-            inp = 2
-        elif inp == 28 or inp == 27:
-            inp = 3
-        elif inp == 26 or inp == 25:
-            inp = 4
-        elif inp == 24 or inp == 23 or inp == 22:
-            inp = 5
-        elif inp == 21 or inp == 20 or inp == 19:
-            inp = 6
-        elif inp == 18 or inp == 17 or inp == 16:
-            inp = 7
-        elif inp == 15 or inp == 14:
-            inp = 8
-        elif inp == 13 or inp == 12:
-            inp = 9
-        elif inp == 11:
-            inp = 10
-        elif inp == 10:
-            inp = 11
-        elif inp == 9:
-            inp = 12
-        elif inp == 8:
-            inp = 13
-        elif inp == 7:
-            inp = 14
-        elif inp == 6:
-            inp = 15
-        elif inp == 5:
-            inp = 16
-        elif inp == 4:
-            inp = 17
-        elif inp == 3:
-            inp = 18
-        elif inp == 2:
-            inp = 19
-        elif inp == 1:
-            inp = 20
-    return inp
+        return random.choice(list([0,1,2,3,3,4,4,5,5,5,6,6,6,7,7,7,8,8,9,9,10,11,12,13,14,15,16,17,18,19,20]))
+    else:
+        return inp
 
 def KlassStar(name_star, type_star):
     global rand
@@ -145,15 +68,7 @@ def KlassStar(name_star, type_star):
             rand = -1
             inp = '-1'
         if inp == '-1':
-            inp = random.randint(1, 100)
-            if inp >= 30:
-                return 'F'
-            elif inp >= 7:
-                return 'A'
-            elif inp >= 3:
-                return 'B'
-            else:
-                return 'O'
+            return random.choice(list(['F']*71+['A']*23+['B']*4+['O']*2))
         else:
             return inp
     elif type_star == 2:
@@ -165,15 +80,7 @@ def KlassStar(name_star, type_star):
             rand = -1
             inp = '-1'
         if inp == '-1':
-            inp = random.randint(1, 100)
-            if inp >= 30:
-                return 'Fс'
-            elif inp >= 7:
-                return 'Aс'
-            elif inp >= 3:
-                return 'Bс'
-            else:
-                return 'Oс'
+            return random.choice(list(['Fc']*71+['Ac']*23+['Bc']*4+['Oc']*2))
         else:
             return inp
     elif type_star == 3:
@@ -185,13 +92,7 @@ def KlassStar(name_star, type_star):
             rand = -1
             inp = '-1'
         if inp == '-1':
-            inp = random.randint(1, 100)
-            if inp >= 97:
-                return 'G'
-            elif inp >= 88:
-                return 'K'
-            else:
-                return 'M'
+            return random.choice(list(['G']*4+['K']*9+['M']*87))
         else:
             return inp
     elif type_star == 4:
@@ -203,13 +104,7 @@ def KlassStar(name_star, type_star):
             rand = -1
             inp = '-1'
         if inp == '-1':
-            inp = random.randint(1, 100)
-            if inp >= 97:
-                return 'Gg'
-            elif inp >= 88:
-                return 'Kg'
-            else:
-                return 'Mg'
+            return random.choice(list(['Gg'] * 4 + ['Kg'] * 9 + ['Mg'] * 87))
         else:
             return inp
     elif type_star == 5:
@@ -221,13 +116,7 @@ def KlassStar(name_star, type_star):
             rand = -1
             inp = '-1'
         if inp == '-1':
-            inp = random.randint(1, 100)
-            if inp >= 97:
-                return 'Gc'
-            elif inp >= 88:
-                return 'Kc'
-            else:
-                return 'Mc'
+            return random.choice(list(['Gc'] * 4 + ['Kc'] * 9 + ['Mc'] * 87))
         else:
             return inp
     elif type_star == 6:
@@ -239,13 +128,7 @@ def KlassStar(name_star, type_star):
             rand = -1
             inp = '-1'
         if inp == '-1':
-            inp = random.randint(1, 13)
-            if inp >= 8:
-                return 'L'
-            elif inp >= 2:
-                return 'T'
-            else:
-                return 'Y'
+            return random.choice(list(['L']*6+['T']*6+['Y']))
         else:
             return inp
     elif type_star == 7:
@@ -305,7 +188,8 @@ def TempStar(klass_star):
     elif klass_star == 'N':
         return random.randint(100, 1000)*1000
 
- # def RadiusStar(klass_star)
+# def RadiusStar(klass_star):
+
 
 random.seed()
 tmp_yn = input("Сгенерировать название системы(y/n)? ")
@@ -314,20 +198,12 @@ if tmp_yn == 'y':
     data_syllables = ['ал', 'ле', 'лу', 'ге', 'за', 'се', 'на', 'би', 'со', 'ус', 'юс', 'ес', 'ар', 'ма', 'ин', 'ди',
                       'ре', 'ри', 'а', 'ер', 'ат', 'ен', 'бе', 'ра', 'ла', 'ве', 'ти', 'ед', 'ор', 'ку', 'ан', 'те',
                       'ис', 'он', 'фо', 'ке', 'ек', 'ос']
-    tmp_count = random.randint(1, 6)
-    if tmp_count == 1:
-        tmp_count = 2
-    elif tmp_count == 2 or tmp_count == 3:
-        tmp_count = 2
-    elif tmp_count == 4 or tmp_count == 5:
-        tmp_count = 3
-    elif tmp_count == 6:
-        tmp_count = 4
+    tmp_count = random.choice([2,3,3,4,4,5])
     for i in range(tmp_count):
         if random.randint(0, 1) == 0:
-            name += data_syllables[random.randint(0, len(data_syllables)-1)][::-1]
+            name += random.choice(data_syllables)[::-1]
         else:
-            name += data_syllables[random.randint(0, len(data_syllables) - 1)]
+            name += random.choice(data_syllables)
     name = name.title()
 else:
     name = input("Название системы: ")

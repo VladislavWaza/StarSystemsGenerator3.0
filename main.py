@@ -4,6 +4,8 @@ import math
 rand = 0
 RadiusSun = 6.9551 * 10 ** 8
 MassSun = 1.9891 * 10 ** 30
+LuminositySun = 3.939 * 10 ** 26
+PSB = 5.67 * 10 ** (-8)
 TypesStar = ['Горячая звезда главной последовательности', 'Горячий сверхгигант главной последовательности',
             'Звезда главной последовательности', 'Гигант главной последовательности',
             'Сверхгигант главной последовательности', 'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар',
@@ -245,6 +247,7 @@ def MassStar(klass_star):
     return inp, inp * MassSun
 
 
+
 random.seed()
 tmp_yn = input("Сгенерировать название системы(y/n)? ")
 if tmp_yn == 'y':
@@ -289,7 +292,8 @@ for i in range(1, n_star+1):
     temp_star = TempStar(klass_star)
     rad_star_sun, rad_star_m = RadiusStar(klass_star)
     mass_star_sun, mass_star_kg = MassStar(klass_star)
-
+    luminosity_vt = 4 * math.pi * rad_star_m ** 2 * PSB * temp_star ** 4
+    luminosity_sun = luminosity_vt / LuminositySun
     wsys[wlitter + '1'] = name_star
     wsys[wlitter + '2'] = color_star
     wsys[wlitter + '3'] = TypesStar[type_star-1]
@@ -300,6 +304,8 @@ for i in range(1, n_star+1):
     wsys[wlitter + '8'] = rad_star_sun
     wsys[wlitter + '9'] = mass_star_kg
     wsys[wlitter + '10'] = mass_star_sun
+    wsys[wlitter + '11'] = luminosity_vt
+    wsys[wlitter + '12'] = luminosity_sun
     if n_planet > 0:
         wstar = wb.copy_worksheet(wb_template['Звезда'])
         wstar.title = name_star
@@ -313,7 +319,8 @@ for i in range(1, n_star+1):
         wstar['B8'] = rad_star_sun
         wstar['B9'] = mass_star_kg
         wstar['B10'] = mass_star_sun
-
+        wstar['B11'] = luminosity_vt
+        wstar['B12'] = luminosity_sun
 
 # wb.move_sheet(ws, offset=-1)
 del wb["Звезда"]

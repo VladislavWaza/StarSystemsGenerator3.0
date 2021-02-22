@@ -2,6 +2,7 @@ from openpyxl import Workbook, load_workbook
 import random
 import math
 rand = 0
+RadiusSun = 6.9551 * 10 ** 8
 TypesStar = ['Горячая звезда главной последовательности', 'Горячий сверхгигант главной последовательности',
             'Звезда главной последовательности', 'Гигант главной последовательности',
             'Сверхгигант главной последовательности', 'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар',
@@ -28,7 +29,7 @@ def TypeStar(name_star):
         inp = -1
     else:
         print("Выберете тип " + name_star)
-        for _ in range(10):
+        for _ in range(1, 11):
             print(str(_) + '.' + TypesStar[_ - 1])
         inp = int(input())
         if inp == -2:
@@ -188,7 +189,32 @@ def TempStar(klass_star):
     elif klass_star == 'N':
         return random.randint(100, 1000)*1000
 
-# def RadiusStar(klass_star):
+def RadiusStar(klass_star):
+    if klass_star == 'O':
+        inp = random.randint(105, 195)/10
+    elif klass_star == 'B':
+        inp = random.randint(49, 91)/10
+    elif klass_star == 'A':
+        inp = random.randint(15, 27)/10
+    elif klass_star == 'F':
+        inp = random.randint(9, 17)/10
+    elif klass_star == 'G':
+        inp = random.randint(77, 140)/100
+    elif klass_star == 'K':
+        inp = random.randint(60, 110)/100
+    elif klass_star == 'M':
+        inp = random.randint(9, 71)/100
+    elif klass_star == 'L' or klass_star == 'T' or klass_star == 'Y':
+        inp = random.randint(12, 70)/1000
+    elif klass_star == 'Dd' or klass_star == 'D':
+        return '-', random.randint(609, 819)*10
+    elif klass_star == 'N':
+        return '-', random.randint(10, 15)
+    elif len(klass_star) == 2 and klass_star[1] == 'g':
+        inp = random.randint(10, 100)
+    elif len(klass_star) == 2 and klass_star[1] == 'c':
+        inp = random.randint(10, 180)*10
+    return inp, inp * RadiusSun
 
 
 random.seed()
@@ -233,6 +259,7 @@ for i in range(1, n_star+1):
     klass_star = KlassStar(name_star, type_star)
     color_star = ColorStar(klass_star)
     temp_star = TempStar(klass_star)
+    rad_star_sun, rad_star_m = RadiusStar(klass_star)
 
     wsys[wlitter + '1'] = name_star
     wsys[wlitter + '2'] = color_star
@@ -240,6 +267,8 @@ for i in range(1, n_star+1):
     wsys[wlitter + '4'] = klass_star
     wsys[wlitter + '5'] = n_planet
     wsys[wlitter + '6'] = temp_star
+    wsys[wlitter + '7'] = rad_star_m
+    wsys[wlitter + '8'] = rad_star_sun
     if n_planet > 0:
         wstar = wb.copy_worksheet(wb_template['Звезда'])
         wstar.title = name_star
@@ -249,6 +278,8 @@ for i in range(1, n_star+1):
         wstar['B4'] = klass_star
         wstar['B5'] = n_planet
         wstar['B6'] = temp_star
+        wstar['B7'] = rad_star_m
+        wstar['B8'] = rad_star_sun
 
 
 

@@ -309,18 +309,8 @@ for i in range(1, n_star+1):
     if n_planet > 0:
         wstar = wb.copy_worksheet(wb_template['Звезда'])
         wstar.title = name_star
-        wstar['B1'] = name_star
-        wstar['B2'] = color_star
-        wstar['B3'] = TypesStar[type_star - 1]
-        wstar['B4'] = klass_star
-        wstar['B5'] = n_planet
-        wstar['B6'] = temp_star
-        wstar['B7'] = rad_star_m
-        wstar['B8'] = rad_star_sun
-        wstar['B9'] = mass_star_kg
-        wstar['B10'] = mass_star_sun
-        wstar['B11'] = luminosity_vt
-        wstar['B12'] = luminosity_sun
+        for j in range(1, 13):
+            wstar['B'+str(j)].value = wsys[wlitter + str(j)].value
 
 # wb.move_sheet(ws, offset=-1)
 del wb["Звезда"]

@@ -4,7 +4,9 @@ import math
 rand = 0
 G = 6.67 * 10 ** (-11)
 RadiusSun = 6.9551 * 10 ** 8
+RadiusEarth = 6371 * 1000
 MassSun = 1.9891 * 10 ** 30
+MassEarth = 5.97 * 10 ** 24
 LuminositySun = 3.939 * 10 ** 26
 PSB = 5.67 * 10 ** (-8)
 AE = 149600000000
@@ -22,6 +24,8 @@ ListKlassPlanetCold = ['Каменная планета', 'Насыщенная 
                       'Ледяная планета', 'Каменно-ледяная планета', 'Амиачная планета', 'Амиачный гигант',
                        'Ледяной гигант']
 TypesPlanet = ['Нептуноподобная', 'Юпитероподобная', 'Планета земной группы', 'Суперземля']
+ListRings = ['Есть', 'Нет']
+
 
 def CountStar():
     global rand
@@ -378,9 +382,10 @@ def CountMoon(type, name_planet):
             rand = -1
             inp = -1
         if inp == -1:
-            return random.choice(list([0] * 5 + [1] * 7 + [2] * 4 + [3] * 2 + [random.randint(4, 11)]))
+            return ListRings[random.choice(list([0] * 1 + [1] * 19))], \
+                   random.choice(list([0] * 5 + [1] * 7 + [2] * 4 + [3] * 2 + [random.randint(4, 11)]))
         else:
-            return inp
+            return ListRings[random.choice(list([0] * 1 + [1] * 19))], inp
     elif type[0] == 'С':
         if inp != -1:
             print("Сколько спутников у планеты " + name_planet+'?')
@@ -389,9 +394,10 @@ def CountMoon(type, name_planet):
             rand = -1
             inp = -1
         if inp == -1:
-            return random.choice(list([0] * 2 + [1] * 2 + [2] * 3 + [3] * 4 + [4] * 4 + [5] * 3 + [random.randint(6, 17)] * 2))
+            return ListRings[random.choice(list([0] * 8 + [1] * 12))], \
+                   random.choice(list([0] * 2 + [1] * 2 + [2] * 3 + [3] * 4 + [4] * 4 + [5] * 3 + [random.randint(6, 17)] * 2))
         else:
-            return inp
+            return ListRings[random.choice(list([0] * 8 + [1] * 12))], inp
     elif type[0] == 'Н':
         if inp != -1:
             print("Сколько спутников у планеты " + name_planet+'?')
@@ -400,9 +406,10 @@ def CountMoon(type, name_planet):
             rand = -1
             inp = -1
         if inp == -1:
-            return random.choice(list([random.randint(0, 8)] * 1 + [random.randint(9, 27)] * 3) + [random.randint(28, 41)] * 1)
+            return ListRings[random.choice(list([0] * 14 + [1] * 6))], \
+                   random.choice(list([random.randint(0, 8)] * 1 + [random.randint(9, 27)] * 3) + [random.randint(28, 41)] * 1)
         else:
-            return inp
+            return ListRings[random.choice(list([0] * 14 + [1] * 6))], inp
     elif type[0] == 'Ю':
         if inp != -1:
             print("Сколько спутников у планеты " + name_planet+'?')
@@ -411,9 +418,25 @@ def CountMoon(type, name_planet):
             rand = -1
             inp = -1
         if inp == -1:
-            return random.choice(list([random.randint(0, 25)] * 1 + [random.randint(26, 92)] * 3) + [random.randint(93, 115)] * 1)
+            return ListRings[random.choice(list([0] * 18 + [1] * 2))], \
+                   random.choice(list([random.randint(0, 25)] * 1 + [random.randint(26, 92)] * 3) + [random.randint(93, 115)] * 1)
         else:
-            return inp
+            return ListRings[random.choice(list([0] * 18 + [1] * 2))], inp
+
+def MassPlanet(type, star_mass):
+    if type[0] == 'П':
+        mass = random.randint(2, 190) / 100
+        density = random.randint(110, 700) * 10
+    elif type[0] == 'С':
+        mass = random.randint(19, 340) / 10
+        density = random.randint(110, 800) * 10
+    elif type[0] == 'Н':
+        mass = random.randint(30, 559) / 10
+        density = random.randint(50, 180) * 10
+    elif type[0] == 'Ю':
+        mass = random.randint(56, min(star_mass * 332940 // 3, 5072)) / 10
+        density = random.randint(50, 180) * 10
+    return density, mass, mass * MassEarth
 
 
 random.seed()
@@ -502,17 +525,35 @@ for i in range(1, n_star+1):
         type_planet = TypePlanet(klass_planet, name_planet)
         vplanet = (G * mass_star_kg / orbit_planet_m) ** 0.5
         year_planet = 2 * math.pi * orbit_planet_m / vplanet / 3600 / 24
-        n_moon = CountMoon(type_planet, name_planet)
+        rings, n_moon = CountMoon(type_planet, name_planet)
         intensity_planet = luminosity_vt / 4 / math.pi / (orbit_planet_m ** 2)
+        density_planet, mass_planet_earth, mass_planet_kg = MassPlanet(type_planet, mass_star_sun)
+        rad_planet_m = (3 * mass_planet_kg / 4 / math.pi / density_planet) ** (1/3)
+        rad_planet_earth = rad_planet_m / RadiusEarth
+        aof_planet = G * mass_planet_kg / rad_planet_m /rad_planet_m
+        v1_planet = (aof_planet * rad_planet_m) ** 0.5
+        v2_planet = 2 ** 0.5 * v1_planet
+        v3_planet = ((2 ** 0.5 - 1) ** 2 * vplanet ** 2 + v2_planet ** 2) ** 0.5
         wstar[wplitter + '14'] = name_planet
         wstar[wplitter + '15'] = type_planet
         wstar[wplitter + '16'] = klass_planet
         wstar[wplitter + '17'] = n_moon
+        wstar[wplitter + '18'] = rad_planet_m
+        wstar[wplitter + '19'] = rad_planet_earth
+        wstar[wplitter + '20'] = mass_planet_kg
+        wstar[wplitter + '21'] = mass_planet_earth
+        wstar[wplitter + '22'] = density_planet
+        wstar[wplitter + '23'] = aof_planet
         wstar[wplitter + '24'] = intensity_planet
         wstar[wplitter + '25'] = orbit_planet_m
         wstar[wplitter + '26'] = orbit_planet_ae
         wstar[wplitter + '28'] = round(year_planet, 2)
+        wstar[wplitter + '29'] = v1_planet
+        wstar[wplitter + '30'] = v2_planet
+        wstar[wplitter + '31'] = v3_planet
         wstar[wplitter + '32'] = vplanet
+        wstar[wplitter + '33'] = random.randint(0, 1800) / 10
+        wstar[wplitter + '34'] = rings
 
 
 

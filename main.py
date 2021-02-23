@@ -2,6 +2,7 @@ from openpyxl import Workbook, load_workbook
 import random
 import math
 rand = 0
+G = 6.67 * 10 ** (-11)
 RadiusSun = 6.9551 * 10 ** 8
 MassSun = 1.9891 * 10 ** 30
 LuminositySun = 3.939 * 10 ** 26
@@ -20,6 +21,7 @@ ListKlassPlanetLife = ['Каменная планета', 'Насыщенная 
 ListKlassPlanetCold = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
                       'Ледяная планета', 'Каменно-ледяная планета', 'Амиачная планета', 'Амиачный гигант',
                        'Ледяной гигант']
+TypesPlanet = ['Нептуноподобная', 'Юпитероподобная', 'Планета земной группы', 'Суперземля']
 
 def CountStar():
     global rand
@@ -274,7 +276,7 @@ def KlassPlanet(ven1, ven2, life1, life2, orbit, name_planet):
         inp = 0
     if orbit < ven1:
         if inp != -1:
-            print("Выберете класс планеты" + name_planet)
+            print("Выберете класс планеты " + name_planet)
             for _ in range(6):
                 print(str(_+1) + '.' + ListKlassPlanetHot[_])
             inp = int(input())
@@ -288,7 +290,7 @@ def KlassPlanet(ven1, ven2, life1, life2, orbit, name_planet):
         return ListKlassPlanetHot[inp]
     elif orbit >= ven1 and orbit < ven2:
         if inp != -1:
-            print("Выберете класс планеты" + name_planet)
+            print("Выберете класс планеты " + name_planet)
             for _ in range(4):
                 print(str(_ + 1) + '.' + ListKlassPlanetVen[_])
             inp = int(input())
@@ -302,7 +304,7 @@ def KlassPlanet(ven1, ven2, life1, life2, orbit, name_planet):
         return ListKlassPlanetVen[inp]
     elif orbit >= life1 and orbit <= life2:
         if inp != -1:
-            print("Выберете класс планеты" + name_planet)
+            print("Выберете класс планеты " + name_planet)
             for _ in range(6):
                 print(str(_ + 1) + '.' + ListKlassPlanetLife[_])
             inp = int(input())
@@ -310,13 +312,13 @@ def KlassPlanet(ven1, ven2, life1, life2, orbit, name_planet):
             rand = -1
             inp = -1
         if inp == -1:
-            inp = random.choice(list([0] * 5 + [1] * 3 + [2] * 1 + [3] * 9 + [4] * 9 + [5] * 15))
+            inp = random.choice(list([0] * 3 + [1] * 2 + [2] * 1 + [3] * 6 + [4] * 6 + [5] * 5))
         else:
             inp -= 1
         return ListKlassPlanetLife[inp]
     elif orbit > life2:
         if inp != -1:
-            print("Выберете класс планеты" + name_planet)
+            print("Выберете класс планеты " + name_planet)
             for _ in range(8):
                 print(str(_ + 1) + '.' + ListKlassPlanetCold[_])
             inp = int(input())
@@ -329,19 +331,90 @@ def KlassPlanet(ven1, ven2, life1, life2, orbit, name_planet):
             inp -= 1
         return ListKlassPlanetCold[inp]
 
-def CountMoon(name_planet):
+def TypePlanet(klass, name_planet):
     global rand
     if rand == -1:
         inp = -1
     else:
-        inp = int(input("Сколько спутников у планеты "+name_planet+"? "))
+        inp = 0
+    if 'гигант' in klass:
+        if inp != -1:
+            print("Выберете тип планеты " + name_planet)
+            print('1.Нептуноподобная\n2.Юпитероподобная')
+            inp = int(input())
         if inp == -2:
             rand = -1
             inp = -1
-    if inp == -1:
-        return random.choice(list([0,1,2,3,3,4,4,5,5,5,6,6,6,7,7,7,8,8,9,9,10,11,12,13,14,15,16,17,18,19,20]))
+        if inp == -1:
+            inp = random.choice(list([0] * 7 + [1] * 4))
+        else:
+            inp -= 1
+        return TypesPlanet[inp]
     else:
-        return inp
+        if inp != -1:
+            print("Выберете тип планеты " + name_planet)
+            print('3.Планета земной группы\n4.Суперземля')
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            inp = random.choice(list([2] * 1 + [3] * 2))
+        else:
+            inp -= 1
+        return TypesPlanet[inp]
+
+def CountMoon(type, name_planet):
+    global rand
+    if rand == -1:
+        inp = -1
+    else:
+        inp = 0
+    if type[0] == 'П':
+        if inp != -1:
+            print("Сколько спутников у планеты " + name_planet+'?')
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            return random.choice(list([0] * 5 + [1] * 7 + [2] * 4 + [3] * 2 + [random.randint(4, 11)]))
+        else:
+            return inp
+    elif type[0] == 'С':
+        if inp != -1:
+            print("Сколько спутников у планеты " + name_planet+'?')
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            return random.choice(list([0] * 2 + [1] * 2 + [2] * 3 + [3] * 4 + [4] * 4 + [5] * 3 + [random.randint(6, 17)] * 2))
+        else:
+            return inp
+    elif type[0] == 'Н':
+        if inp != -1:
+            print("Сколько спутников у планеты " + name_planet+'?')
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            return random.choice(list([random.randint(0, 8)] * 1 + [random.randint(9, 27)] * 3) + [random.randint(28, 41)] * 1)
+        else:
+            return inp
+    elif type[0] == 'Ю':
+        if inp != -1:
+            print("Сколько спутников у планеты " + name_planet+'?')
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            return random.choice(list([random.randint(0, 25)] * 1 + [random.randint(26, 92)] * 3) + [random.randint(93, 115)] * 1)
+        else:
+            return inp
+
 
 random.seed()
 tmp_yn = input("Сгенерировать название системы(y/n)? ")
@@ -412,6 +485,7 @@ for i in range(1, n_star+1):
         life_zone2 = (luminosity_sun ** 0.5) * 1.5
     orbit_planet_ae = 0
     for j in range(1, n_planet+1):
+
         if j > 24:  # литера для работы с файлом
             wplitter = chr((j + 1) // 26 + 64) + chr(j + 1 - ((j + 1) // 26) * 26 + 65)
         else:
@@ -421,19 +495,26 @@ for i in range(1, n_star+1):
         else:
             plitter = chr((j - 1) + 65)
         plitter = plitter.lower()
-        if n_planet == 1:
-            name_planet = name_star
-        else:
-            name_planet = name_star + plitter
+
+        name_planet = name_star + plitter
         orbit_planet_ae, orbit_planet_m = PlanetOrbit(orbit_planet_ae)
         klass_planet = KlassPlanet(ven_zone1, ven_zone2, life_zone1, life_zone2, orbit_planet_ae, name_planet)
-
-
+        type_planet = TypePlanet(klass_planet, name_planet)
+        vplanet = (G * mass_star_kg / orbit_planet_m) ** 0.5
+        year_planet = 2 * math.pi * orbit_planet_m / vplanet / 3600 / 24
+        n_moon = CountMoon(type_planet, name_planet)
+        intensity_planet = luminosity_vt / 4 / math.pi / (orbit_planet_m ** 2)
         wstar[wplitter + '14'] = name_planet
+        wstar[wplitter + '15'] = type_planet
         wstar[wplitter + '16'] = klass_planet
+        wstar[wplitter + '17'] = n_moon
+        wstar[wplitter + '24'] = intensity_planet
         wstar[wplitter + '25'] = orbit_planet_m
         wstar[wplitter + '26'] = orbit_planet_ae
-        #n_moon = CountMoon(name_planet)
+        wstar[wplitter + '28'] = round(year_planet, 2)
+        wstar[wplitter + '32'] = vplanet
+
+
 
 # wb.move_sheet(ws, offset=-1)
 del wb["Звезда"]

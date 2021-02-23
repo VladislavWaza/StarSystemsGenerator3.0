@@ -6,11 +6,20 @@ RadiusSun = 6.9551 * 10 ** 8
 MassSun = 1.9891 * 10 ** 30
 LuminositySun = 3.939 * 10 ** 26
 PSB = 5.67 * 10 ** (-8)
+AE = 149600000000
 TypesStar = ['Горячая звезда главной последовательности', 'Горячий сверхгигант главной последовательности',
             'Звезда главной последовательности', 'Гигант главной последовательности',
             'Сверхгигант главной последовательности', 'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар',
             'Магнитар']
-
+ListKlassPlanetHot = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
+                  'Безоблачный гигант', 'Щелочной гигант', 'Кремневый гигант']
+ListKlassPlanetVen = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
+                      'Венероподобная планета']
+ListKlassPlanetLife = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
+                      'Водная планета', 'Землеподобная планета', 'Водный гигант']
+ListKlassPlanetCold = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
+                      'Ледяная планета', 'Каменно-ледяная планета', 'Амиачная планета', 'Амиачный гигант',
+                       'Ледяной гигант']
 
 def CountStar():
     global rand
@@ -246,7 +255,93 @@ def MassStar(klass_star):
         inp = random.randint(10, 300)
     return inp, inp * MassSun
 
+def PlanetOrbit(o0):
+    if o0 == 0:
+        o0 = random.choice(list([random.randint(306, 380)] + [random.randint(232, 306)] * 2 +
+                                [random.randint(158, 232)] * 4 + [random.randint(84, 158)] * 8 +
+                                [random.randint(10, 84)] * 16))/1000
+    else:
+        o0 = o0 * random.choice(list([random.randint(317, 358)] + [random.randint(277, 317)] * 2 +
+                                [random.randint(236, 277)] * 4 + [random.randint(195, 236)] * 8 +
+                                [random.randint(155, 195)] * 16 + [random.randint(114, 155)] * 16))/100
+    return o0, o0 * AE
 
+def KlassPlanet(ven1, ven2, life1, life2, orbit, name_planet):
+    global rand
+    if rand == -1:
+        inp = -1
+    else:
+        inp = 0
+    if orbit < ven1:
+        if inp != -1:
+            print("Выберете класс планеты" + name_planet)
+            for _ in range(6):
+                print(str(_+1) + '.' + ListKlassPlanetHot[_])
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            inp = random.choice(list([0] * 4 + [1] * 3 + [2] * 1 + [3] * 6 + [4] * 5 + [5] * 2))
+        else:
+            inp -= 1
+        return ListKlassPlanetHot[inp]
+    elif orbit >= ven1 and orbit < ven2:
+        if inp != -1:
+            print("Выберете класс планеты" + name_planet)
+            for _ in range(4):
+                print(str(_ + 1) + '.' + ListKlassPlanetVen[_])
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            inp = random.choice(list([0] * 4 + [1] * 3 + [2] * 1 + [3] * 6))
+        else:
+            inp -= 1
+        return ListKlassPlanetVen[inp]
+    elif orbit >= life1 and orbit <= life2:
+        if inp != -1:
+            print("Выберете класс планеты" + name_planet)
+            for _ in range(6):
+                print(str(_ + 1) + '.' + ListKlassPlanetLife[_])
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            inp = random.choice(list([0] * 5 + [1] * 3 + [2] * 1 + [3] * 9 + [4] * 9 + [5] * 15))
+        else:
+            inp -= 1
+        return ListKlassPlanetLife[inp]
+    elif orbit > life2:
+        if inp != -1:
+            print("Выберете класс планеты" + name_planet)
+            for _ in range(8):
+                print(str(_ + 1) + '.' + ListKlassPlanetCold[_])
+            inp = int(input())
+        if inp == -2:
+            rand = -1
+            inp = -1
+        if inp == -1:
+            inp = random.choice(list([0] * 8 + [1] * 6 + [2] * 3 + [3] * 8 + [4] * 5 + [5] * 2 + [6] * 10 + [7] * 26))
+        else:
+            inp -= 1
+        return ListKlassPlanetCold[inp]
+
+def CountMoon(name_planet):
+    global rand
+    if rand == -1:
+        inp = -1
+    else:
+        inp = int(input("Сколько спутников у планеты "+name_planet+"? "))
+        if inp == -2:
+            rand = -1
+            inp = -1
+    if inp == -1:
+        return random.choice(list([0,1,2,3,3,4,4,5,5,5,6,6,6,7,7,7,8,8,9,9,10,11,12,13,14,15,16,17,18,19,20]))
+    else:
+        return inp
 
 random.seed()
 tmp_yn = input("Сгенерировать название системы(y/n)? ")
@@ -281,13 +376,13 @@ for i in range(1, n_star+1):
     else:
         litter = chr((i-1) + 65)
     if n_star == 1:
-        name_star = name
+        name_star = name+' '
     else:
         name_star = name+' '+litter
 
-    n_planet = CountPlanet(name_star)
     type_star = TypeStar(name_star)
     klass_star = KlassStar(name_star, type_star)
+    n_planet = CountPlanet(name_star)
     color_star = ColorStar(klass_star)
     temp_star = TempStar(klass_star)
     rad_star_sun, rad_star_m = RadiusStar(klass_star)
@@ -311,6 +406,34 @@ for i in range(1, n_star+1):
         wstar.title = name_star
         for j in range(1, 13):
             wstar['B'+str(j)].value = wsys[wlitter + str(j)].value
+        ven_zone1 = (luminosity_sun ** 0.5) * 0.387
+        ven_zone2 = (luminosity_sun ** 0.5) * 0.855
+        life_zone1 = (luminosity_sun ** 0.5) * 0.855
+        life_zone2 = (luminosity_sun ** 0.5) * 1.5
+    orbit_planet_ae = 0
+    for j in range(1, n_planet+1):
+        if j > 24:  # литера для работы с файлом
+            wplitter = chr((j + 1) // 26 + 64) + chr(j + 1 - ((j + 1) // 26) * 26 + 65)
+        else:
+            wplitter = chr(j + 66)
+        if j - 1 > 25:  # литера для названия
+            plitter = chr((j - 1) // 26 + 64) + chr((j - 1) - ((j - 1) // 26) * 26 + 65)
+        else:
+            plitter = chr((j - 1) + 65)
+        plitter = plitter.lower()
+        if n_planet == 1:
+            name_planet = name_star
+        else:
+            name_planet = name_star + plitter
+        orbit_planet_ae, orbit_planet_m = PlanetOrbit(orbit_planet_ae)
+        klass_planet = KlassPlanet(ven_zone1, ven_zone2, life_zone1, life_zone2, orbit_planet_ae, name_planet)
+
+
+        wstar[wplitter + '14'] = name_planet
+        wstar[wplitter + '16'] = klass_planet
+        wstar[wplitter + '25'] = orbit_planet_m
+        wstar[wplitter + '26'] = orbit_planet_ae
+        #n_moon = CountMoon(name_planet)
 
 # wb.move_sheet(ws, offset=-1)
 del wb["Звезда"]

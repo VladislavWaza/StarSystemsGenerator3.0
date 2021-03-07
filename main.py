@@ -526,6 +526,7 @@ for i in range(1, n_star+1):
         vplanet = (G * mass_star_kg / orbit_planet_m) ** 0.5
         year_planet = 2 * math.pi * orbit_planet_m / vplanet / 3600 / 24
         rings, n_moon = CountMoon(type_planet, name_planet)
+        n_big_moon = random.randint(0, min(n_moon, 7))
         intensity_planet = luminosity_vt / 4 / math.pi / (orbit_planet_m ** 2)
         density_planet, mass_planet_earth, mass_planet_kg = MassPlanet(type_planet, mass_star_sun)
         rad_planet_m = (3 * mass_planet_kg / 4 / math.pi / density_planet) ** (1/3)
@@ -538,22 +539,39 @@ for i in range(1, n_star+1):
         wstar[wplitter + '15'] = type_planet
         wstar[wplitter + '16'] = klass_planet
         wstar[wplitter + '17'] = n_moon
-        wstar[wplitter + '18'] = rad_planet_m
-        wstar[wplitter + '19'] = rad_planet_earth
-        wstar[wplitter + '20'] = mass_planet_kg
-        wstar[wplitter + '21'] = mass_planet_earth
-        wstar[wplitter + '22'] = density_planet
-        wstar[wplitter + '23'] = aof_planet
-        wstar[wplitter + '24'] = intensity_planet
-        wstar[wplitter + '25'] = orbit_planet_m
-        wstar[wplitter + '26'] = orbit_planet_ae
-        wstar[wplitter + '28'] = round(year_planet, 2)
-        wstar[wplitter + '29'] = v1_planet
-        wstar[wplitter + '30'] = v2_planet
-        wstar[wplitter + '31'] = v3_planet
-        wstar[wplitter + '32'] = vplanet
-        wstar[wplitter + '33'] = random.randint(0, 1800) / 10
-        wstar[wplitter + '34'] = rings
+        wstar[wplitter + '18'] = n_big_moon
+        wstar[wplitter + '19'] = rad_planet_m
+        wstar[wplitter + '20'] = rad_planet_earth
+        wstar[wplitter + '21'] = mass_planet_kg
+        wstar[wplitter + '22'] = mass_planet_earth
+        wstar[wplitter + '23'] = density_planet
+        wstar[wplitter + '24'] = aof_planet
+        wstar[wplitter + '25'] = intensity_planet
+        wstar[wplitter + '26'] = orbit_planet_m
+        wstar[wplitter + '27'] = orbit_planet_ae
+        wstar[wplitter + '29'] = round(year_planet, 2)
+        wstar[wplitter + '30'] = v1_planet
+        wstar[wplitter + '31'] = v2_planet
+        wstar[wplitter + '32'] = v3_planet
+        wstar[wplitter + '33'] = vplanet
+        wstar[wplitter + '34'] = random.randint(0, 1800) / 10
+        wstar[wplitter + '35'] = rings
+        if n_big_moon > 0:
+            wplanet = wb.copy_worksheet(wb_template['Планета'])
+            wplanet.title = name_planet
+            for z in range(1, 23):
+                wplanet['B'+str(z)].value = wstar[wplitter + str(z+13)].value
+
+        for z in range(1, n_big_moon+1):
+            if z > 24:  # литера для работы с файлом
+                wmlitter = chr((z + 1) // 26 + 64) + chr(z + 1 - ((z + 1) // 26) * 26 + 65)
+            else:
+                wmlitter = chr(z + 66)
+            name_moon = name_planet + str(z)
+            wplanet[wmlitter + '24'] = name_moon
+
+
+
 
 
 

@@ -556,27 +556,7 @@ for i in range(1, n_star+1):
         wstar[wplitter + '33'] = vplanet
         wstar[wplitter + '34'] = random.randint(0, 1800) / 10
         wstar[wplitter + '35'] = rings
-        if n_big_moon > 0:
-            wplanet = wb.copy_worksheet(wb_template['Планета'])
-            wplanet.title = name_planet
-            for z in range(1, 23):
-                wplanet['B'+str(z)].value = wstar[wplitter + str(z+13)].value
 
-        for z in range(1, n_big_moon+1):
-            if z > 24:  # литера для работы с файлом
-                wmlitter = chr((z + 1) // 26 + 64) + chr(z + 1 - ((z + 1) // 26) * 26 + 65)
-            else:
-                wmlitter = chr(z + 66)
-            name_moon = name_planet + str(z)
-            wplanet[wmlitter + '24'] = name_moon
-
-
-
-
-
-
-# wb.move_sheet(ws, offset=-1)
 del wb["Звезда"]
-del wb["Планета"]
 wb.worksheets[0].name = "Main"
 wb.save(name+'.xlsx')

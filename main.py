@@ -14,7 +14,7 @@ AE = 149600000000
 myFill = PatternFill(start_color='d0cece', end_color='d0cece', fill_type='solid')
 StringNames = ['Название', 'Тип', 'Радиуc, м', 'Радиуc, Rз', 'Масса, кг', 'Масса, Мз', 'Плотность, кг/м^3',
                'Ускорение свободного падения, м/с^2', 'Большая полуось орбиты, м', 'Большая полуось орбиты, а.е.',
-               'Период вращения', 'Период обращения, дни', 'Уровень взаимодействия', '1 космическая скорость, м/с',
+               'Период вращения, дни', 'Период обращения, дни', 'Уровень взаимодействия', '1 космическая скорость, м/с',
                '2 космическая скорость, м/с', 'Скорость движения по орбите, м/с', 'Угол наклона оси, градусы']
 TypesStar = ['Горячая звезда', 'Горячий сверхгигант', 'Звезда', 'Гигант', 'Сверхгигант',
              'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар', 'Магнитар']
@@ -576,18 +576,18 @@ for i in range(1, n_star+1):
         wstar[wplitter + '25'] = round(intensity_planet)
         wstar[wplitter + '26'] = round(orbit_planet_m)
         wstar[wplitter + '27'] = round(orbit_planet_ae, 3)
-        wstar[wplitter + '29'] = round(year_planet, 2)
-        wstar[wplitter + '30'] = round(v1_planet)
-        wstar[wplitter + '31'] = round(v2_planet)
-        wstar[wplitter + '32'] = round(v3_planet)
-        wstar[wplitter + '33'] = round(vplanet)
-        wstar[wplitter + '34'] = random.randint(0, 1800) / 10
-        wstar[wplitter + '35'] = rings
+        wstar[wplitter + '30'] = round(year_planet, 2)
+        wstar[wplitter + '31'] = round(v1_planet)
+        wstar[wplitter + '32'] = round(v2_planet)
+        wstar[wplitter + '33'] = round(v3_planet)
+        wstar[wplitter + '34'] = round(vplanet)
+        wstar[wplitter + '35'] = random.randint(0, 1800) / 10
+        wstar[wplitter + '36'] = rings
         for z in range(1, n_big_moon+1):
             for f in range(0, len(StringNames)):
-                wstar['A' + str(f+(z-1)*18+37)] = StringNames[f]
-                wstar.cell(row=f+(z-1)*18+37, column=1).fill = myFill
-            name_moon = name_planet + str(z)
+                wstar['A' + str(f+(z-1)*18+38)] = StringNames[f]
+                wstar.cell(row=f+(z-1)*18+38, column=1).fill = myFill
+            name_moon = name_planet + ' ' + str(z)
             type_moon = TypeMoon(ven_zone1, ven_zone2, life_zone1, life_zone2, orbit_planet_ae)
             list_mass_moon_earth = [0] * 5
             list_mass_moon_earth[0] = random.randint(96, min(8040, mass_planet_earth/4 * 10 ** 6)) / 10 ** 6
@@ -608,30 +608,31 @@ for i in range(1, n_star+1):
                 lvloi = 'Приливной захват'
             else:
                 lvloi = 'Приливная блокировка'
-            wstar[wplitter + str(0 + (z-1)*18+37)] = name_moon
-            wstar[wplitter + str(1 + (z - 1) * 18 + 37)] = type_moon
-            wstar[wplitter + str(2 + (z - 1) * 18 + 37)] = round(rad_moon_m)
-            wstar[wplitter + str(3 + (z - 1) * 18 + 37)] = rad_moon_earth
-            wstar[wplitter + str(4 + (z - 1) * 18 + 37)] = mass_moon_kg
-            wstar[wplitter + str(5 + (z - 1) * 18 + 37)] = mass_moon_earth
-            wstar[wplitter + str(6 + (z - 1) * 18 + 37)] = density_moon
-            wstar[wplitter + str(7 + (z - 1) * 18 + 37)] = aof_moon
-            wstar[wplitter + str(8 + (z - 1) * 18 + 37)] = '=('+ str(G*mass_planet_kg/4/(math.pi ** 2)) + '*(' \
-                                                           + wplitter + str(11 + (z - 1) * 18 + 37) + '*86400)^2'\
+            pivo = (z-1)*18+38
+            wstar[wplitter + str(0 + pivo)] = name_moon
+            wstar[wplitter + str(1 + pivo)] = type_moon
+            wstar[wplitter + str(2 + pivo)] = round(rad_moon_m)
+            wstar[wplitter + str(3 + pivo)] = rad_moon_earth
+            wstar[wplitter + str(4 + pivo)] = mass_moon_kg
+            wstar[wplitter + str(5 + pivo)] = mass_moon_earth
+            wstar[wplitter + str(6 + pivo)] = density_moon
+            wstar[wplitter + str(7 + pivo)] = aof_moon
+            wstar[wplitter + str(8 + pivo)] = '=('+ str(G*mass_planet_kg/4/(math.pi ** 2)) + '*(' \
+                                                           + wplitter + str(11 + pivo) + '*86400)^2'\
                                                            + ')^(1/3)'
-            wstar[wplitter + str(9 + (z - 1) * 18 + 37)] = '=' + wplitter + str(8 + (z - 1) * 18 + 37) + '/' + str(AE)
-            wstar[wplitter + str(10 + (z - 1) * 18 + 37)] = '=' + wplitter + '28'
+            wstar[wplitter + str(9 + pivo)] = '=' + wplitter + str(8 + pivo) + '/' + str(AE)
+            wstar[wplitter + str(10 + pivo)] = '=' + wplitter + '29'
             if lvloi == 'Приливная блокировка':
-                wstar[wplitter + str(11 + (z - 1) * 18 + 37)] = '=' + wplitter + '28'
+                wstar[wplitter + str(11 + pivo)] = '=' + wplitter + '29'
             else:
-                wstar[wplitter + str(11 + (z - 1) * 18 + 37)] = '=' + wplitter + '28' + '*' + str(ConstSystem ** z)
-            wstar[wplitter + str(12 + (z - 1) * 18 + 37)] = lvloi
-            wstar[wplitter + str(13 + (z - 1) * 18 + 37)] = v1_moon
-            wstar[wplitter + str(14 + (z - 1) * 18 + 37)] = v2_moon
-            wstar[wplitter + str(15 + (z - 1) * 18 + 37)] = '=2*' + str(math.pi) + '*' \
-                                                            + wplitter + str(8 + (z - 1) * 18 + 37) +'/86400/' \
-                                                            + wplitter + str(11 + (z - 1) * 18 + 37)
-            wstar[wplitter + str(16 + (z - 1) * 18 + 37)] = random.randint(0, 1800) / 10
+                wstar[wplitter + str(11 + pivo)] = '=' + wplitter + '29' + '*' + str(ConstSystem ** z)
+            wstar[wplitter + str(12 + pivo)] = lvloi
+            wstar[wplitter + str(13 + pivo)] = v1_moon
+            wstar[wplitter + str(14 + pivo)] = v2_moon
+            wstar[wplitter + str(15 + pivo)] = '=2*' + str(math.pi) + '*' \
+                                                            + wplitter + str(8 + pivo) +'/86400/' \
+                                                            + wplitter + str(11 + pivo)
+            wstar[wplitter + str(16 + pivo)] = random.randint(0, 1800) / 10
 
 
 del wb["Звезда"]

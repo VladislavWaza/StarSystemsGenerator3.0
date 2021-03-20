@@ -545,7 +545,7 @@ for i in range(1, n_star+1):
         else:
             plitter = chr((j - 1) + 65)
         plitter = plitter.lower()
-
+        wstar.freeze_panes = wstar['B1']
         name_planet = name_star + plitter
         orbit_planet_ae, orbit_planet_m = PlanetOrbit(orbit_planet_ae)
         klass_planet = KlassPlanet(ven_zone1, ven_zone2, life_zone1, life_zone2, orbit_planet_ae, name_planet)

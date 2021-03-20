@@ -1,4 +1,5 @@
 from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Color, PatternFill, Font, Border
 import random
 import math
 rand = 0
@@ -10,10 +11,13 @@ MassEarth = 5.97 * 10 ** 24
 LuminositySun = 3.939 * 10 ** 26
 PSB = 5.67 * 10 ** (-8)
 AE = 149600000000
-TypesStar = ['Горячая звезда главной последовательности', 'Горячий сверхгигант главной последовательности',
-            'Звезда главной последовательности', 'Гигант главной последовательности',
-            'Сверхгигант главной последовательности', 'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар',
-            'Магнитар']
+myFill = PatternFill(start_color='d0cece', end_color='d0cece', fill_type='solid')
+StringNames = ['Название', 'Тип', 'Радиуc, м', 'Радиуc, Rз', 'Масса, кг', 'Масса, Мз', 'Плотность, кг/м^3',
+               'Ускорение свободного падения, м/с^2', 'Большая полуось орбиты, м', 'Большая полуось орбиты, а.е.',
+               'Период вращения', 'Период обращения, дни', 'Уровень взаимодействия', '1 космическая скорость, м/с',
+               '2 космическая скорость, м/с', 'Скорость движения по орбите, м/с', 'Угол наклона оси, градусы']
+TypesStar = ['Горячая звезда', 'Горячий сверхгигант', 'Звезда', 'Гигант', 'Сверхгигант',
+             'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар', 'Магнитар']
 ListKlassPlanetHot = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
                   'Безоблачный гигант', 'Щелочной гигант', 'Кремневый гигант']
 ListKlassPlanetVen = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
@@ -25,6 +29,8 @@ ListKlassPlanetCold = ['Каменная планета', 'Насыщенная 
                        'Ледяной гигант']
 TypesPlanet = ['Нептуноподобная', 'Юпитероподобная', 'Планета земной группы', 'Суперземля']
 ListRings = ['Есть', 'Нет']
+TypesMoon = ['Каменный', 'Насыщенный металлами', 'Металлический', 'Водный', 'Землеподобный',
+             'Ледяной', 'Каменно-ледяной', 'Амиачный']
 
 
 def CountStar():
@@ -376,52 +382,62 @@ def CountMoon(type, name_planet):
         inp = 0
     if type[0] == 'П':
         if inp != -1:
-            print("Сколько спутников у планеты " + name_planet+'?')
+            print("Сколько крупных спутников у планеты " + name_planet+'?')
             inp = int(input())
         if inp == -2:
             rand = -1
             inp = -1
         if inp == -1:
-            return ListRings[random.choice(list([0] * 1 + [1] * 19))], \
-                   random.choice(list([0] * 5 + [1] * 7 + [2] * 4 + [3] * 2 + [random.randint(4, 11)]))
+            nb = random.choice(list([0] * 5 + [1] * 7 + [2] * 2 + [3]))
         else:
-            return ListRings[random.choice(list([0] * 1 + [1] * 19))], inp
+            nb = inp
+        ri = ListRings[random.choice(list([0] * 1 + [1] * 19))]
+        n = random.randint(nb, max(nb, 11))
+        return ri, n, nb
     elif type[0] == 'С':
         if inp != -1:
-            print("Сколько спутников у планеты " + name_planet+'?')
+            print("Сколько крупных спутников у планеты " + name_planet+'?')
             inp = int(input())
         if inp == -2:
             rand = -1
             inp = -1
         if inp == -1:
-            return ListRings[random.choice(list([0] * 8 + [1] * 12))], \
-                   random.choice(list([0] * 2 + [1] * 2 + [2] * 3 + [3] * 4 + [4] * 4 + [5] * 3 + [random.randint(6, 17)] * 2))
+            nb = random.choice(list([0] * 3 + [1] * 5 + [2] * 3 + [3] * 2 + [4]))
         else:
-            return ListRings[random.choice(list([0] * 8 + [1] * 12))], inp
+            nb = inp
+        ri = ListRings[random.choice(list([0] * 8 + [1] * 12))]
+        n = random.randint(nb, max(nb, 17))
+        return ri, n, nb
     elif type[0] == 'Н':
         if inp != -1:
-            print("Сколько спутников у планеты " + name_planet+'?')
+            print("Сколько крупных спутников у планеты " + name_planet+'?')
             inp = int(input())
         if inp == -2:
             rand = -1
             inp = -1
         if inp == -1:
-            return ListRings[random.choice(list([0] * 14 + [1] * 6))], \
-                   random.choice(list([random.randint(0, 8)] * 1 + [random.randint(9, 27)] * 3) + [random.randint(28, 41)] * 1)
+            nb = random.choice(list([0] * 1 + [1] * 1 + [2] * 2 + [3] * 2 + [4] * 2 + [5] * 3 + [6] * 3 +
+                                    [7] * 2 + [8] + [9] + [10]))
         else:
-            return ListRings[random.choice(list([0] * 14 + [1] * 6))], inp
+            nb = inp
+        ri = ListRings[random.choice(list([0] * 14 + [1] * 6))]
+        n = random.randint(nb, max(nb, 41))
+        return ri, n, nb
     elif type[0] == 'Ю':
         if inp != -1:
-            print("Сколько спутников у планеты " + name_planet+'?')
+            print("Сколько крупных спутников у планеты " + name_planet+'?')
             inp = int(input())
         if inp == -2:
             rand = -1
             inp = -1
         if inp == -1:
-            return ListRings[random.choice(list([0] * 18 + [1] * 2))], \
-                   random.choice(list([random.randint(0, 25)] * 1 + [random.randint(26, 92)] * 3) + [random.randint(93, 115)] * 1)
+            nb = random.choice(list([0] * 1 + [1] * 1 + [2] * 2 + [3] * 2 + [4] * 2 + [5] * 3 + [6] * 3 +
+                                    [7] * 2 + [8] + [9] + [10]))
         else:
-            return ListRings[random.choice(list([0] * 18 + [1] * 2))], inp
+            nb = inp
+        ri = ListRings[random.choice(list([0] * 18 + [1] * 2))]
+        n = random.randint(nb, max(nb, 41))
+        return ri, n, nb
 
 def MassPlanet(type, star_mass):
     if type[0] == 'П':
@@ -437,6 +453,17 @@ def MassPlanet(type, star_mass):
         mass = random.randint(56, min(star_mass * 332940 // 3, 5072)) / 10
         density = random.randint(50, 180) * 10
     return density, mass, mass * MassEarth
+
+def TypeMoon(ven1, ven2, life1, life2, orbit):
+    if orbit < ven2:
+        inp = random.choice(list([0] * 4 + [1] * 2 + [2] * 1))
+    elif orbit >= life1 and orbit <= life2:
+        inp = random.choice(list([0] * 12 + [1] * 6 + [2] * 3 + [3] + [4]))
+    elif orbit > life2:
+        inp = random.choice(list([0] * 4 + [1] * 2 + [2] * 1 + [5] * 3 + [6] * 3 + [7]))
+    return TypesMoon[inp]
+
+
 
 
 random.seed()
@@ -525,8 +552,7 @@ for i in range(1, n_star+1):
         type_planet = TypePlanet(klass_planet, name_planet)
         vplanet = (G * mass_star_kg / orbit_planet_m) ** 0.5
         year_planet = 2 * math.pi * orbit_planet_m / vplanet / 3600 / 24
-        rings, n_moon = CountMoon(type_planet, name_planet)
-        n_big_moon = random.randint(0, min(n_moon, 7))
+        rings, n_moon, n_big_moon = CountMoon(type_planet, name_planet)
         intensity_planet = luminosity_vt / 4 / math.pi / (orbit_planet_m ** 2)
         density_planet, mass_planet_earth, mass_planet_kg = MassPlanet(type_planet, mass_star_sun)
         rad_planet_m = (3 * mass_planet_kg / 4 / math.pi / density_planet) ** (1/3)
@@ -535,6 +561,7 @@ for i in range(1, n_star+1):
         v1_planet = (aof_planet * rad_planet_m) ** 0.5
         v2_planet = 2 ** 0.5 * v1_planet
         v3_planet = ((2 ** 0.5 - 1) ** 2 * vplanet ** 2 + v2_planet ** 2) ** 0.5
+        ConstSystem = random.randint(150, 250) / 100
         wstar[wplitter + '14'] = name_planet
         wstar[wplitter + '15'] = type_planet
         wstar[wplitter + '16'] = klass_planet
@@ -556,6 +583,56 @@ for i in range(1, n_star+1):
         wstar[wplitter + '33'] = round(vplanet)
         wstar[wplitter + '34'] = random.randint(0, 1800) / 10
         wstar[wplitter + '35'] = rings
+        for z in range(1, n_big_moon+1):
+            for f in range(0, len(StringNames)):
+                wstar['A' + str(f+(z-1)*18+37)] = StringNames[f]
+                wstar.cell(row=f+(z-1)*18+37, column=1).fill = myFill
+            name_moon = name_planet + str(z)
+            type_moon = TypeMoon(ven_zone1, ven_zone2, life_zone1, life_zone2, orbit_planet_ae)
+            list_mass_moon_earth = [0] * 5
+            list_mass_moon_earth[0] = random.randint(96, min(8040, mass_planet_earth/4 * 10 ** 6)) / 10 ** 6
+            list_mass_moon_earth[1] = random.randint(8040, min(25126, mass_planet_earth / 4 * 10 ** 6)) / 10 ** 6
+            list_mass_moon_earth[2], list_mass_moon_earth[3] = list_mass_moon_earth[1], list_mass_moon_earth[1]
+            list_mass_moon_earth[4] = random.randint(25126, min(1900000, mass_planet_earth / 4 * 10 ** 6)) / 10 ** 6
+            mass_moon_earth = random.choice(list_mass_moon_earth)
+            mass_moon_kg = mass_moon_earth * MassEarth
+            density_moon = random.randint(110, 700) * 10
+            rad_moon_m = (3 * mass_moon_kg / 4 / math.pi / density_moon) ** (1 / 3)
+            rad_moon_earth = rad_moon_m / RadiusEarth
+            aof_moon = G * mass_moon_kg / rad_moon_m / rad_moon_m
+            v1_moon = (aof_moon * rad_moon_m) ** 0.5
+            v2_moon = 2 ** 0.5 * v1_moon
+            if aof_moon < 1 and (type_moon == 'Водный' or type_moon == 'Землеподобный' or type_moon == 'Амиачный'):
+                type_moon = 'Насыщенный металлами'
+            if mass_moon_earth < mass_planet_earth * 0.1167:
+                lvloi = 'Приливной захват'
+            else:
+                lvloi = 'Приливная блокировка'
+            wstar[wplitter + str(0 + (z-1)*18+37)] = name_moon
+            wstar[wplitter + str(1 + (z - 1) * 18 + 37)] = type_moon
+            wstar[wplitter + str(2 + (z - 1) * 18 + 37)] = round(rad_moon_m)
+            wstar[wplitter + str(3 + (z - 1) * 18 + 37)] = rad_moon_earth
+            wstar[wplitter + str(4 + (z - 1) * 18 + 37)] = mass_moon_kg
+            wstar[wplitter + str(5 + (z - 1) * 18 + 37)] = mass_moon_earth
+            wstar[wplitter + str(6 + (z - 1) * 18 + 37)] = density_moon
+            wstar[wplitter + str(7 + (z - 1) * 18 + 37)] = aof_moon
+            wstar[wplitter + str(8 + (z - 1) * 18 + 37)] = '=('+ str(G*mass_planet_kg/4/(math.pi ** 2)) + '*(' \
+                                                           + wplitter + str(11 + (z - 1) * 18 + 37) + '*86400)^2'\
+                                                           + ')^(1/3)'
+            wstar[wplitter + str(9 + (z - 1) * 18 + 37)] = '=' + wplitter + str(8 + (z - 1) * 18 + 37) + '/' + str(AE)
+            wstar[wplitter + str(10 + (z - 1) * 18 + 37)] = '=' + wplitter + '28'
+            if lvloi == 'Приливная блокировка':
+                wstar[wplitter + str(11 + (z - 1) * 18 + 37)] = '=' + wplitter + '28'
+            else:
+                wstar[wplitter + str(11 + (z - 1) * 18 + 37)] = '=' + wplitter + '28' + '*' + str(ConstSystem ** z)
+            wstar[wplitter + str(12 + (z - 1) * 18 + 37)] = lvloi
+            wstar[wplitter + str(13 + (z - 1) * 18 + 37)] = v1_moon
+            wstar[wplitter + str(14 + (z - 1) * 18 + 37)] = v2_moon
+            wstar[wplitter + str(15 + (z - 1) * 18 + 37)] = '=2*' + str(math.pi) + '*' \
+                                                            + wplitter + str(8 + (z - 1) * 18 + 37) +'/86400/' \
+                                                            + wplitter + str(11 + (z - 1) * 18 + 37)
+            wstar[wplitter + str(16 + (z - 1) * 18 + 37)] = random.randint(0, 1800) / 10
+
 
 del wb["Звезда"]
 wb.worksheets[0].name = "Main"

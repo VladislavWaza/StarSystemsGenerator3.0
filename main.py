@@ -12,10 +12,10 @@ LuminositySun = 3.939 * 10 ** 26
 PSB = 5.67 * 10 ** (-8)
 AE = 149600000000
 myFill = PatternFill(start_color='d0cece', end_color='d0cece', fill_type='solid')
-StringNames = ['Название', 'Тип', 'Радиуc, м', 'Радиуc, Rз', 'Масса, кг', 'Масса, Мз', 'Плотность, кг/м^3',
-               'Ускорение свободного падения, м/с^2', 'Большая полуось орбиты, м', 'Большая полуось орбиты, а.е.',
-               'Период вращения, дни', 'Период обращения, дни', 'Уровень взаимодействия', '1 космическая скорость, м/с',
-               '2 космическая скорость, м/с', 'Скорость движения по орбите, м/с', 'Угол наклона оси, градусы']
+StringNames = ['Название', 'Тип', 'Радиуc', 'Радиуc', 'Масса', 'Масса', 'Плотность',
+               'Ускорение свободного падения', 'Равновесная температура', 'Большая полуось орбиты, м',
+               'Большая полуось орбиты, а.е.', 'Период вращения, дни', 'Период обращения, дни', 'Уровень взаимодействия',
+               '1 космическая скорость', '2 космическая скорость', 'Скорость движения по орбите, м/с', 'Угол наклона оси']
 TypesStar = ['Горячая звезда', 'Горячий сверхгигант', 'Звезда', 'Гигант', 'Сверхгигант',
              'Коричневый карлик', 'Белый карлик', 'Чёрный карлик', 'Пульсар', 'Магнитар']
 ListKlassPlanetHot = ['Каменная планета', 'Насыщенная металлами планета', 'Металлическая планета',
@@ -463,8 +463,51 @@ def TypeMoon(ven1, ven2, life1, life2, orbit):
         inp = random.choice(list([0] * 4 + [1] * 2 + [2] * 1 + [5] * 3 + [6] * 3 + [7]))
     return TypesMoon[inp]
 
+def TempPlanet(inten, klass):
+    if klass == 'Каменная планета' or klass == 'Насыщенная металлами планета' or klass == 'Металлическая планета':
+        alibedo = random.randint(80, 300) / 1000
+    elif klass == 'Безоблачный гигант':
+        alibedo = random.randint(100, 200) / 1000
+    elif klass == 'Щелочной гигант':
+        alibedo = random.randint(5, 50) / 1000
+    elif klass == 'Кремневый гигант':
+        alibedo = random.randint(450, 650) / 1000
+    elif klass == 'Венероподобная планета':
+        alibedo = random.randint(600, 800) / 1000
+    elif klass == 'Водная планета':
+        alibedo = random.randint(700, 800) / 1000
+    elif klass == 'Землеподобная планета':
+        alibedo = random.randint(300, 400) / 1000
+    elif klass == 'Водный гигант':
+        alibedo = random.randint(800, 950) / 1000
+    elif klass == 'Ледяная планета':
+        alibedo = random.randint(750, 900) / 1000
+    elif klass == 'Каменно-ледяная планета':
+        alibedo = random.randint(600, 700) / 1000
+    elif klass == 'Амиачная планета':
+        alibedo = random.randint(350, 500) / 1000
+    elif klass == 'Амиачный гигант':
+        alibedo = random.randint(300, 600) / 1000
+    elif klass == 'Ледяной гигант':
+        alibedo = random.randint(250, 400) / 1000
+    Te = round((inten * (1 - alibedo) / 4 / PSB) ** (1/4) - 273.15, 1)
+    return str(Te) + ' °С'
 
-
+def TempMoon(inten, klass):
+    if klass == 'Каменный' or klass == 'Насыщенный металлами' or klass == 'Металлический':
+        alibedo = random.randint(80, 300) / 1000
+    elif klass == 'Водный':
+        alibedo = random.randint(700, 800) / 1000
+    elif klass == 'Землеподобный':
+        alibedo = random.randint(300, 400) / 1000
+    elif klass == 'Ледяной':
+        alibedo = random.randint(750, 900) / 1000
+    elif klass == 'Каменно-ледяной':
+        alibedo = random.randint(600, 700) / 1000
+    elif klass == 'Амиачный':
+        alibedo = random.randint(350, 500) / 1000
+    Te = round((inten * (1 - alibedo) / 4 / PSB) ** (1/4) - 273.15, 1)
+    return str(Te) + ' °С'
 
 random.seed()
 tmp_yn = input("Сгенерировать название системы(y/n)? ")
@@ -517,13 +560,13 @@ for i in range(1, n_star+1):
     wsys[wlitter + '3'] = TypesStar[type_star-1]
     wsys[wlitter + '4'] = klass_star
     wsys[wlitter + '5'] = n_planet
-    wsys[wlitter + '6'] = temp_star
-    wsys[wlitter + '7'] = rad_star_m
-    wsys[wlitter + '8'] = rad_star_sun
-    wsys[wlitter + '9'] = mass_star_kg
-    wsys[wlitter + '10'] = mass_star_sun
-    wsys[wlitter + '11'] = luminosity_vt
-    wsys[wlitter + '12'] = luminosity_sun
+    wsys[wlitter + '6'] = str(temp_star) + 'K'
+    wsys[wlitter + '7'] = str(rad_star_m/1000) + ' км'
+    wsys[wlitter + '8'] = str(rad_star_sun) + ' Rс'
+    wsys[wlitter + '9'] = str(mass_star_kg) + ' кг'
+    wsys[wlitter + '10'] = str(mass_star_sun) + ' Mс'
+    wsys[wlitter + '11'] = str(luminosity_vt) + ' Вт'
+    wsys[wlitter + '12'] = str(luminosity_sun) + ' Lс'
     if n_planet > 0:
         wstar = wb.copy_worksheet(wb_template['Звезда'])
         wstar.title = name_star
@@ -567,26 +610,26 @@ for i in range(1, n_star+1):
         wstar[wplitter + '16'] = klass_planet
         wstar[wplitter + '17'] = n_moon
         wstar[wplitter + '18'] = n_big_moon
-        wstar[wplitter + '19'] = round(rad_planet_m)
-        wstar[wplitter + '20'] = round(rad_planet_earth, 4)
-        wstar[wplitter + '21'] = mass_planet_kg
-        wstar[wplitter + '22'] = mass_planet_earth
-        wstar[wplitter + '23'] = density_planet
-        wstar[wplitter + '24'] = round(aof_planet, 2)
-        wstar[wplitter + '25'] = round(intensity_planet)
-        wstar[wplitter + '26'] = round(orbit_planet_m)
-        wstar[wplitter + '27'] = round(orbit_planet_ae, 3)
-        wstar[wplitter + '30'] = round(year_planet, 2)
-        wstar[wplitter + '31'] = round(v1_planet)
-        wstar[wplitter + '32'] = round(v2_planet)
-        wstar[wplitter + '33'] = round(v3_planet)
-        wstar[wplitter + '34'] = round(vplanet)
-        wstar[wplitter + '35'] = random.randint(0, 1800) / 10
+        wstar[wplitter + '19'] = str(round(rad_planet_m)/1000) + ' км'
+        wstar[wplitter + '20'] = str(round(rad_planet_earth, 4)) + ' Rз'
+        wstar[wplitter + '21'] = str(mass_planet_kg) + ' кг'
+        wstar[wplitter + '22'] = str(mass_planet_earth) + ' Mз'
+        wstar[wplitter + '23'] = str(density_planet) + ' кг/м3'
+        wstar[wplitter + '24'] = str(round(aof_planet, 2)) + ' м/с2'
+        wstar[wplitter + '25'] = TempPlanet(intensity_planet, klass_planet)
+        wstar[wplitter + '26'] = str(round(orbit_planet_m)) + ' м'
+        wstar[wplitter + '27'] = str(round(orbit_planet_ae, 3)) + ' а.е.'
+        wstar[wplitter + '30'] = str(round(year_planet, 2)) + ' дней'
+        wstar[wplitter + '31'] = str(round(v1_planet)) + ' м/с'
+        wstar[wplitter + '32'] = str(round(v2_planet)) + ' м/с'
+        wstar[wplitter + '33'] = str(round(v3_planet)) + ' м/с'
+        wstar[wplitter + '34'] = str(round(vplanet)) + ' м/с'
+        wstar[wplitter + '35'] = str(random.randint(0, 1800) / 10) + '°'
         wstar[wplitter + '36'] = rings
         for z in range(1, n_big_moon+1):
             for f in range(0, len(StringNames)):
-                wstar['A' + str(f+(z-1)*18+38)] = StringNames[f]
-                wstar.cell(row=f+(z-1)*18+38, column=1).fill = myFill
+                wstar['A' + str(f+(z-1)*19+38)] = StringNames[f]
+                wstar.cell(row=f+(z-1)*19+38, column=1).fill = myFill
             name_moon = name_planet + ' ' + str(z)
             type_moon = TypeMoon(ven_zone1, ven_zone2, life_zone1, life_zone2, orbit_planet_ae)
             list_mass_moon_earth = [0] * 5
@@ -608,31 +651,32 @@ for i in range(1, n_star+1):
                 lvloi = 'Приливной захват'
             else:
                 lvloi = 'Приливная блокировка'
-            pivo = (z-1)*18+38
+            pivo = (z-1)*19+38
             wstar[wplitter + str(0 + pivo)] = name_moon
             wstar[wplitter + str(1 + pivo)] = type_moon
-            wstar[wplitter + str(2 + pivo)] = round(rad_moon_m)
-            wstar[wplitter + str(3 + pivo)] = rad_moon_earth
-            wstar[wplitter + str(4 + pivo)] = mass_moon_kg
-            wstar[wplitter + str(5 + pivo)] = mass_moon_earth
-            wstar[wplitter + str(6 + pivo)] = density_moon
-            wstar[wplitter + str(7 + pivo)] = aof_moon
-            wstar[wplitter + str(8 + pivo)] = '=('+ str(G*mass_planet_kg/4/(math.pi ** 2)) + '*(' \
-                                                           + wplitter + str(11 + pivo) + '*86400)^2'\
+            wstar[wplitter + str(2 + pivo)] = str(round(rad_moon_m)/1000) + ' км'
+            wstar[wplitter + str(3 + pivo)] = str(round(rad_moon_earth, 3)) + ' Rз'
+            wstar[wplitter + str(4 + pivo)] = str(mass_moon_kg) + ' кг'
+            wstar[wplitter + str(5 + pivo)] = str(mass_moon_earth) + ' Mз'
+            wstar[wplitter + str(6 + pivo)] = str(density_moon) + ' кг/м3'
+            wstar[wplitter + str(7 + pivo)] = str(round(aof_moon, 3)) + ' м/с2'
+            wstar[wplitter + str(8 + pivo)] = TempMoon(intensity_planet, type_moon)
+            wstar[wplitter + str(9 + pivo)] = '=('+ str(G*mass_planet_kg/4/(math.pi ** 2)) + '*(' \
+                                                           + wplitter + str(12 + pivo) + '*86400)^2'\
                                                            + ')^(1/3)'
-            wstar[wplitter + str(9 + pivo)] = '=' + wplitter + str(8 + pivo) + '/' + str(AE)
-            wstar[wplitter + str(10 + pivo)] = '=' + wplitter + '29'
+            wstar[wplitter + str(10 + pivo)] = '=' + wplitter + str(9 + pivo) + '/' + str(AE)
+            wstar[wplitter + str(11 + pivo)] = '=' + wplitter + '29'
             if lvloi == 'Приливная блокировка':
-                wstar[wplitter + str(11 + pivo)] = '=' + wplitter + '29'
+                wstar[wplitter + str(12 + pivo)] = '=' + wplitter + '29'
             else:
-                wstar[wplitter + str(11 + pivo)] = '=' + wplitter + '29' + '*' + str(ConstSystem ** z)
-            wstar[wplitter + str(12 + pivo)] = lvloi
-            wstar[wplitter + str(13 + pivo)] = v1_moon
-            wstar[wplitter + str(14 + pivo)] = v2_moon
-            wstar[wplitter + str(15 + pivo)] = '=2*' + str(math.pi) + '*' \
-                                                            + wplitter + str(8 + pivo) +'/86400/' \
-                                                            + wplitter + str(11 + pivo)
-            wstar[wplitter + str(16 + pivo)] = random.randint(0, 1800) / 10
+                wstar[wplitter + str(12 + pivo)] = '=' + wplitter + '29' + '*' + str(ConstSystem ** z)
+            wstar[wplitter + str(13 + pivo)] = lvloi
+            wstar[wplitter + str(14 + pivo)] = str(round(v1_moon)) + ' м/с'
+            wstar[wplitter + str(15 + pivo)] = str(round(v2_moon)) + ' м/с'
+            wstar[wplitter + str(16 + pivo)] = '=2*' + str(math.pi) + '*' \
+                                                            + wplitter + str(9 + pivo) +'/86400/' \
+                                                            + wplitter + str(12 + pivo)
+            wstar[wplitter + str(17 + pivo)] = str(random.randint(0, 1800) / 10) + '°'
 
 
 del wb["Звезда"]
